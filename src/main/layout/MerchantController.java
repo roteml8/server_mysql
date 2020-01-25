@@ -1,4 +1,4 @@
-package main;
+package main.layout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,29 +11,27 @@ import main.dao.rdb.MerchantRepository;
 import main.data.Merchant;
 
 
-@Controller // This means that this class is a Controller
-@RequestMapping(path="/demo") // This means URL's start with /demo (after Application path)
+@Controller 
+@RequestMapping(path="/database/merchants") 
 public class MerchantController {
 	
 	@Autowired
 	private MerchantRepository merchantRepository;
 	
 	@PostMapping(path="/add") // Map ONLY POST Requests
-	  public @ResponseBody String addNewMerchant (@RequestParam String name
+	  public @ResponseBody String addNewMerchant (@RequestParam String id, @RequestParam String name
 	      , @RequestParam String password) {
-	    // @ResponseBody means the returned String is the response, not a view name
-	    // @RequestParam means it is a parameter from the GET or POST request
 
 	    Merchant m = new Merchant();
-	    m.setMerchantId("1");
+	    m.setMerchantId(id);
 	    m.setMerchantName(name);
 	    m.setMerchantPassword(password);
 	    merchantRepository.save(m);
-	    return "Saved";
+	    return "Saved merchant successfully.";
 	  }
 
 	  @GetMapping(path="/all")
-	  public @ResponseBody Iterable<Merchant> getAllUsers() {
+	  public @ResponseBody Iterable<Merchant> getAllMerchants() {
 	    // This returns a JSON or XML with the users
 	    return merchantRepository.findAll();
 	  }

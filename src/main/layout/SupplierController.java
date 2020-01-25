@@ -44,7 +44,7 @@ public class SupplierController {
 	
 	@PostMapping(path="/addproduct") // Map ONLY POST Requests
 	  public @ResponseBody String addProducts(@RequestParam String supplierId, @RequestParam String name
-	      , @RequestParam String productId, @RequestParam String category,@RequestParam double price, 
+	      ,  @RequestParam String category,@RequestParam double price, 
 	      @RequestParam int quantity) {
 		
 		
@@ -63,7 +63,6 @@ public class SupplierController {
 			}
 			Supplier theSupplier = s.get();
 			p.setSupplier(theSupplier);
-			p.setProductId(productId);
 			p.setProductName(name);
 			p.setProductPrice(price);
 			p.setQuantity(quantity);
@@ -77,8 +76,6 @@ public class SupplierController {
 			return "no supplier with specified id.";
 
 	  }
-	
-	
 	
 
 	  @GetMapping(path="/all")

@@ -35,8 +35,7 @@ public class MerchantController {
 	private StoreRepository storeRepository;
 	@Autowired
 	private MerchantPurchaseRepository purchasesRepository;
-	@Autowired
-	private PlatformRepository platformRepository;
+
 	@Autowired
 	private StoreProductRepository storeProductRepository;
 
@@ -96,32 +95,7 @@ public class MerchantController {
 						}
 	  }
 	
-	@PostMapping(path="/addstore") // Map ONLY POST Requests
-	  public @ResponseBody String addStore (@RequestParam Long merchantId, @RequestParam String name,
-			  @RequestParam String platform	  
-	    ) {
-			Optional<Merchant> m = this.merchantRepository.findById(merchantId);
-			if (!m.isPresent())
-				return "Merchant does not exist in th system";
-			else {
-				Merchant theMerchant = m.get();
-				Store newStore = new Store();
-				if (!this.platformRepository.findById(platform).isPresent())
-				{
-					Platform p = new Platform();
-					p.setPlatformName(platform);
-					this.platformRepository.save(p);
-				}
-				newStore.setPlatform(this.platformRepository.findById(platform).get());
-				newStore.setStoreName(name);
-				newStore.setMerchant(theMerchant);
-				this.storeRepository.save(newStore);
-				return "store saved successfully";
 
-
-
-						}
-	  }
 
 	  @GetMapping(path="/all")
 	  public @ResponseBody Iterable<Merchant> getAllMerchants() {
@@ -129,10 +103,6 @@ public class MerchantController {
 	    return merchantRepository.findAll();
 	  }
 	  
-	  @GetMapping(path="/stores")
-	  public @ResponseBody Iterable<Store> getAllStores() {
-	    // This returns a JSON or XML with the users
-	    return storeRepository.findAll();
-	  }
+
 
 }

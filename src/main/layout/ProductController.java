@@ -61,6 +61,28 @@ public class ProductController {
 			return this.productRepository.findBySupplier(theSupplier);
 		}
 	  }
+	  
+	  @GetMapping(path="/name")
+	  public @ResponseBody Iterable<Product> getProductsByName(@RequestParam String name
+		      ){
+		  return this.productRepository.findByProductNameIgnoreCaseContaining(name);
+		  
+
+	  }
+	  
+	  @GetMapping(path="/price")
+	  public @ResponseBody Iterable<Product> getProductsByPrice(@RequestParam double price
+		      ){
+		  return this.productRepository.findByProductPriceLessThan(price);	  
+
+	  }
+	  
+	  @GetMapping(path="/quantity")
+	  public @ResponseBody Iterable<Product> getProductsByQuantity(@RequestParam int quantity
+		      ){
+		  return this.productRepository.findByQuantityGreaterThan(quantity); 
+
+	  }
 	
 	
 

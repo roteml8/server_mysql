@@ -52,7 +52,7 @@ public class ProductController {
 	  public @ResponseBody Iterable<Product> getProductsBySupplier(@RequestParam Long supplierId
 		      ){
 		  
-		Optional<Supplier> s = this.supplierRepository.findBySupplierId(supplierId);
+		Optional<Supplier> s = this.supplierRepository.findById(supplierId);
 		if (!s.isPresent()) {
 			return new ArrayList<Product>();
 		}

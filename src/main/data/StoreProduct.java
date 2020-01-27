@@ -1,9 +1,11 @@
 package main.data;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -11,8 +13,10 @@ import javax.persistence.Table;
 public class StoreProduct {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
-	private Store store;
+	private String name;
+
 	private int quantity;
 	private int price;
 	public Long getId() {
@@ -21,12 +25,7 @@ public class StoreProduct {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Store getStore() {
-		return store;
-	}
-	public void setStore(Store store) {
-		this.store = store;
-	}
+
 	public int getQuantity() {
 		return quantity;
 	}
@@ -42,6 +41,11 @@ public class StoreProduct {
 	public StoreProduct() {
 		super();
 	} 
-
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 }

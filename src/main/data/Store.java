@@ -3,6 +3,7 @@ package main.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,12 +24,20 @@ public class Store {
 	private Platform platform;
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private String storeId;
+	@Column(name = "id", updatable = false, nullable = false)
+	private Long storeId;
 	@ManyToOne
 	private Merchant merchant;
 	@OneToMany
 	private List<StoreProduct> storeProducts = new ArrayList<>();
+	private String storeName;
 	
+	public String getStoreName() {
+		return storeName;
+	}
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
+	}
 	public Store() {
 		super();
 	}
@@ -38,10 +47,10 @@ public class Store {
 	public void setPlatform(Platform platform) {
 		this.platform = platform;
 	}
-	public String getStoreId() {
+	public Long getStoreId() {
 		return storeId;
 	}
-	public void setStoreId(String storeId) {
+	public void setStoreId(Long storeId) {
 		this.storeId = storeId;
 	}
 

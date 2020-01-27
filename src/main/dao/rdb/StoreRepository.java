@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import main.data.Store;
 
-public interface StoreRepository extends CrudRepository<Store,String> {
+public interface StoreRepository extends CrudRepository<Store,Long> {
 
 }

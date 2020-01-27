@@ -1,8 +1,14 @@
 package main.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import main.data.Merchant;
@@ -13,22 +19,16 @@ import main.data.Platform;
 public class Store {
 	
 	
+	@ManyToOne
 	private Platform platform;
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private String storeId;
-	private String username;
-	private String password; 
 	@ManyToOne
 	private Merchant merchant;
+	@OneToMany
+	private List<StoreProduct> storeProducts = new ArrayList<>();
 	
-	public Store(Platform platform, String storeId, String username, String password, Merchant merchant) {
-		super();
-		this.platform = platform;
-		this.storeId = storeId;
-		this.username = username;
-		this.password = password;
-		this.merchant = merchant;
-	}
 	public Store() {
 		super();
 	}
@@ -44,17 +44,12 @@ public class Store {
 	public void setStoreId(String storeId) {
 		this.storeId = storeId;
 	}
-	public String getUsername() {
-		return username;
+
+	public List<StoreProduct> getStoreProducts() {
+		return storeProducts;
 	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
+	public void setStoreProducts(List<StoreProduct> storeProducts) {
+		this.storeProducts = storeProducts;
 	}
 	public Merchant getMerchant() {
 		return merchant;
@@ -62,8 +57,6 @@ public class Store {
 	public void setMerchant(Merchant merchant) {
 		this.merchant = merchant;
 	}
-	
-	
 	
 }
 	

@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import main.dao.rdb.CategoryRepository;
 import main.dao.rdb.ProductRepository;
+import main.dao.rdb.SupplierRepository;
 import main.data.Product;
 import main.data.ProductCategory;
+import main.data.Supplier;
 
 @Controller 
 @RequestMapping(path="/database/products") 
@@ -23,6 +25,8 @@ public class ProductController {
 	private ProductRepository productRepository;
 	@Autowired
 	private CategoryRepository categoryRepository;
+	@Autowired
+	private SupplierRepository supplierRepository;
 
 	  @GetMapping(path="/all")
 	  public @ResponseBody Iterable<Product> getAllProducts() {
@@ -43,6 +47,21 @@ public class ProductController {
 		    return productRepository.findByCategory(theCategory);
 		}
 	  }
+	  
+	  @GetMapping(path="/supplier")
+	  public @ResponseBody Iterable<Product> getProductsBySupplier(@RequestParam Long supplierId
+		      ){
+		  
+		Optional<Supplier> s = this.supplierRepository.findBySupplierId(supplierId);
+		if (!s.isPresent()) {
+			return new ArrayList<Product>();
+		}
+		else {
+			Supplier theSupplier = s.get();
+			return this.productRepository.findBySupplier(theSupplier);
+		}
+	  }
+	
 	
 
 }

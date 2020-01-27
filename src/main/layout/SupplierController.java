@@ -31,19 +31,17 @@ public class SupplierController {
 	
 	
 	@PostMapping(path="/add") // Map ONLY POST Requests
-	  public @ResponseBody String addNewSupplier (@RequestParam String id, @RequestParam String name
-	      , @RequestParam String password) {
+	  public @ResponseBody String addNewSupplier (@RequestParam String name
+	      ) {
 
 	    Supplier s = new Supplier();
-	    s.setSupplierId(id);
 	    s.setSupplierName(name);
-	    s.setSupplierPassword(password);
 	    supplierRepository.save(s);
 	    return "Saved supplier successfully.";
 	  }
 	
 	@PostMapping(path="/addproduct") // Map ONLY POST Requests
-	  public @ResponseBody String addProducts(@RequestParam String supplierId, @RequestParam String name
+	  public @ResponseBody String addProducts(@RequestParam Long supplierId, @RequestParam String name
 	      ,  @RequestParam String category,@RequestParam double price, 
 	      @RequestParam int quantity) {
 		
@@ -67,8 +65,6 @@ public class SupplierController {
 			p.setProductPrice(price);
 			p.setQuantity(quantity);
 		    productRepository.save(p);
-		    List<Product> supProducts = theSupplier.getProducts();
-		    supProducts.add(p);
 		    return "Saved products successfully.";
 
 		}

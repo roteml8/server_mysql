@@ -36,8 +36,8 @@ public class SupplierController {
 
 	    Supplier s = new Supplier();
 	    s.setSupplierName(name);
-	    supplierRepository.save(s);
-	    return "Saved supplier successfully.";
+	    Supplier rv = supplierRepository.save(s);
+	    return "Saved supplier successfully. Supplier ID "+rv.getSupplierId();
 	  }
 	
 	@PostMapping(path="/addproduct") // Map ONLY POST Requests
@@ -64,8 +64,8 @@ public class SupplierController {
 			p.setProductName(name);
 			p.setProductPrice(price);
 			p.setQuantity(quantity);
-		    productRepository.save(p);
-		    return "Saved products successfully.";
+		    Product rv = productRepository.save(p);
+		    return "Saved products successfully. Product ID "+rv.getProductId();
 
 		}
 		else

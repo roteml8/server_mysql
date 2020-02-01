@@ -46,11 +46,11 @@ public class MerchantController {
 
 	    Merchant m = new Merchant();
 	    m.setMerchantName(name);
-	    merchantRepository.save(m);
-	    return "Saved merchant successfully.";
+	    Merchant rv = merchantRepository.save(m);
+	    return "Saved merchant successfully. Merchant ID is "+rv.getMerchantId();
 	  }
 	
-	@PostMapping(path="/purchase") // Map ONLY POST Requests
+	@PostMapping(path="/purchasenew") // Map ONLY POST Requests
 	  public @ResponseBody String purchaseProducts (@RequestParam Long productId, @RequestParam Long merchantId,
 			  @RequestParam int amount,
 			  @RequestParam int price,
@@ -81,19 +81,52 @@ public class MerchantController {
 					newProduct.setPrice(price);
 					newProduct.setQuantity(amount);
 					newProduct.setName(theProduct.getProductName());
+					newProduct.setCategory(theProduct.getCategory());
+					newProduct.setStore(theStore);
 					this.storeProductRepository.save(newProduct);
-					theStore.getStoreProducts().add(newProduct);
 					MerchantPurchase newPurchase = new MerchantPurchase();
 					newPurchase.setAmount(amount);
 					newPurchase.setMerchant(m.get());
 					newPurchase.setProduct(theProduct);
-					this.purchasesRepository.save(newPurchase);
-				    return "Products purchased successfully.";
+					MerchantPurchase rv = this.purchasesRepository.save(newPurchase);
+				    return "Products purchased successfully. Purchase ID is "+rv.getPurchaseId();
 
 				}
 			}
 						}
 	  }
+	
+	@PostMapping(path="/addinventory") // Map ONLY POST Requests
+	  public @ResponseBody String buyMoreFromProduct (@RequestParam Long productId, @RequestParam Long merchantId,
+			  @RequestParam int amount,
+			  @RequestParam Long storeId	  
+	    ) {
+
+		Optional<Product> p = this.productRepository.findById(productId);
+		if (!p.isPresent())
+			return "Product does not exist in the system.";
+		else {
+			Product theProduct = p.get();
+			if (theProduct.getQuantity() < amount)
+				return "Inventory contains only "+theProduct.getQuantity()+"items";
+			else {
+				theProduct.setQuantity(theProduct.getQuantity()-amount);
+				this.productRepository.save(theProduct);
+				Optional<Store> s = this.storeRepository.findById(storeId);
+				if (!s.isPresent())
+					return "Store does not exist in the system.";
+				else
+				{
+					Store theStore = s.get();
+					StoreProduct toBeAdded = this.storeProductRepository.findByNameAndStore(theProduct.getProductName(),theStore);
+					toBeAdded.setQuantity(toBeAdded.getQuantity() + amount);
+					this.storeProductRepository.save(toBeAdded);
+					return "Product amount updated!";
+
+			}
+						}
+	  }
+	}
 	
 
 

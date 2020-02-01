@@ -117,5 +117,7 @@
 	<classpathentry kind="lib" path="D:/Afeka/פרויקט גמר/jar_files/jta-1.1.jar"/>
 	<classpathentry kind="lib" path="D:/Afeka/פרויקט גמר/jar_files/slf4j-api-1.5.8.jar"/>
 	<classpathentry kind="lib" path="D:/Afeka/פרויקט גמר/jar_files/xml-apis-1.0.b2.jar"/>
+	<classpathentry kind="lib" path="D:/Afeka/פרויקט גמר/external jars/jar_files/mysql-connector-java-8.0.19.jar"/>
+	<classpathentry kind="lib" path="D:/Afeka/פרויקט גמר/external jars/jar_files/protobuf-java-3.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -79,8 +79,8 @@ public class StoreController {
 					newStore.setPlatform(this.platformRepository.findById(platform).get());
 					newStore.setStoreName(name);
 					newStore.setMerchant(theMerchant);
-					this.storeRepository.save(newStore);
-					return "store saved successfully";
+					Store rv  =this.storeRepository.save(newStore);
+					return "store saved successfully! Store ID "+rv.getStoreId();
 
 							}
 		  }

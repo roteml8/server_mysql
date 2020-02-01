@@ -16,9 +16,12 @@ public class StoreProduct {
 	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
 	private String name;
-
+	@ManyToOne
+	private ProductCategory category;
 	private int quantity;
 	private int price;
+	@ManyToOne
+	private Store store;
 	public Long getId() {
 		return id;
 	}
@@ -47,5 +50,19 @@ public class StoreProduct {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public ProductCategory getCategory() {
+		return category;
+	}
+	public void setCategory(ProductCategory category) {
+		this.category = category;
+	}
+	public Store getStore() {
+		return store;
+	}
+	public void setStore(Store store) {
+		this.store = store;
+	}
+	
+	
 	
 }

@@ -28,8 +28,7 @@ public class Store {
 	private Long storeId;
 	@ManyToOne
 	private Merchant merchant;
-	@OneToMany
-	private List<StoreProduct> storeProducts = new ArrayList<>();
+
 	private String storeName;
 	
 	public String getStoreName() {
@@ -54,12 +53,6 @@ public class Store {
 		this.storeId = storeId;
 	}
 
-	public List<StoreProduct> getStoreProducts() {
-		return storeProducts;
-	}
-	public void setStoreProducts(List<StoreProduct> storeProducts) {
-		this.storeProducts = storeProducts;
-	}
 	public Merchant getMerchant() {
 		return merchant;
 	}

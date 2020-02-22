@@ -16,71 +16,60 @@ import main.dao.rdb.SupplierRepository;
 import main.data.Product;
 import main.data.ProductCategory;
 import main.data.Supplier;
+import main.infra.ProductService;
 
 @Controller 
 @RequestMapping(path="/database/products") 
 public class ProductController {
 	
 	@Autowired
-	private ProductRepository productRepository;
-	@Autowired
-	private CategoryRepository categoryRepository;
-	@Autowired
-	private SupplierRepository supplierRepository;
+	private ProductService productService;
 
 	  @GetMapping(path="/all")
 	  public @ResponseBody Iterable<Product> getAllProducts() {
-	    // This returns a JSON or XML with the users
-	    return productRepository.findAll();
+	  
+	    return productService.getAll();
 	  }
 	  
 	  @GetMapping(path="/category")
 	  public @ResponseBody Iterable<Product> getProductsByCategory(@RequestParam String category
 		      ){
 		  
-		Optional<ProductCategory> c = this.categoryRepository.findById(category);
-		if (!c.isPresent()) {
-			return new ArrayList<Product>();
-		}
-		else {
-			ProductCategory theCategory = c.get();
-		    return productRepository.findByCategory(theCategory);
-		}
+		  return productService.getByCategory(category);
 	  }
 	  
 	  @GetMapping(path="/supplier")
 	  public @ResponseBody Iterable<Product> getProductsBySupplier(@RequestParam Long supplierId
 		      ){
 		  
-		Optional<Supplier> s = this.supplierRepository.findById(supplierId);
-		if (!s.isPresent()) {
-			return new ArrayList<Product>();
-		}
-		else {
-			Supplier theSupplier = s.get();
-			return this.productRepository.findBySupplier(theSupplier);
-		}
+		  		try {
+		  			return productService.getBySupplier(supplierId);
+		  		}
+		  		catch (Exception e)
+		  		{
+		  			e.printStackTrace();
+		  			return new ArrayList<Product>();
+		  		}
 	  }
 	  
 	  @GetMapping(path="/name")
 	  public @ResponseBody Iterable<Product> getProductsByName(@RequestParam String name
 		      ){
-		  return this.productRepository.findByProductNameIgnoreCaseContaining(name);
-		  
+		  return productService.getByName(name);
 
 	  }
 	  
 	  @GetMapping(path="/price")
 	  public @ResponseBody Iterable<Product> getProductsByPrice(@RequestParam double price
 		      ){
-		  return this.productRepository.findByProductPriceLessThan(price);	  
+		  return productService.getByPrice(price);
 
 	  }
 	  
 	  @GetMapping(path="/quantity")
 	  public @ResponseBody Iterable<Product> getProductsByQuantity(@RequestParam int quantity
 		      ){
-		  return this.productRepository.findByQuantityGreaterThan(quantity); 
+		  return productService.getByQuantity(quantity);
 
 	  }
 	

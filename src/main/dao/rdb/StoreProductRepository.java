@@ -13,5 +13,7 @@ public interface StoreProductRepository extends CrudRepository<StoreProduct, Lon
 	
 	public ArrayList<StoreProduct> findByName(String name);
 	public StoreProduct findByNameAndStore(String name, Store store);
+	public ArrayList<StoreProduct> findByStore(Store store);
+
 
 }

@@ -20,7 +20,7 @@ public class BuyerOrder implements Comparable<BuyerOrder> {
 	@ManyToOne
 	private StoreProduct product;
 	@ManyToOne
-	private Store store = product.getStore();
+	private Store store;
 	private int quantity;
 	private java.time.LocalDate date;
 	private double buyerAge; 
@@ -75,6 +75,8 @@ public class BuyerOrder implements Comparable<BuyerOrder> {
 		return this.date.compareTo(o.getDate());
 
 	}
+	
+	
 	
 	
 

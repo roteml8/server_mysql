@@ -39,6 +39,18 @@ public class MerchantController {
 		return this.merchantService.addToStoreFromSupplier(productId, merchantId, amount, price, storeId); 
 	  }
 	
+	@PostMapping(path="/addnew") 
+	  public @ResponseBody String addProducts (
+			  @RequestParam String productName,
+			  @RequestParam String productCategory,
+			  @RequestParam int amount,
+			  @RequestParam int price,
+			  @RequestParam Long storeId	  
+	    ) {
+
+		return this.merchantService.addToStore(storeId,productName,productCategory, amount, price); 
+	  }
+	
 	@PostMapping(path="/addinventory") // Map ONLY POST Requests
 	  public @ResponseBody String buyMoreFromProduct (@RequestParam Long productId, @RequestParam Long merchantId,
 			  @RequestParam int amount,
@@ -51,7 +63,6 @@ public class MerchantController {
 
 	  @GetMapping(path="/all")
 	  public @ResponseBody Iterable<Merchant> getAllMerchants() {
-	    // This returns a JSON or XML with the users
 	    return this.merchantService.getAll();
 	  }
 	  

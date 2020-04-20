@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import main.dao.rdb.CategoryRepository;
 import main.dao.rdb.MerchantPurchaseRepository;
 import main.dao.rdb.MerchantRepository;
 import main.dao.rdb.ProductRepository;
@@ -13,6 +14,7 @@ import main.dao.rdb.StoreRepository;
 import main.data.Merchant;
 import main.data.MerchantPurchase;
 import main.data.Product;
+import main.data.ProductCategory;
 import main.data.Store;
 import main.data.StoreProduct;
 
@@ -29,6 +31,10 @@ public class MerchantService {
 	private MerchantPurchaseRepository purchasesRepository;
 	@Autowired
 	private StoreProductRepository storeProductRepository;
+	@Autowired
+	private CategoryRepository categoryRepository;
+	
+	
 	
 	public Long addNewMerchant (String merchantName)
 	{
@@ -37,6 +43,36 @@ public class MerchantService {
 	    Merchant rv = merchantRepository.save(m);
 	    Long newId = rv.getMerchantId();
 	    return newId; 
+	}
+	
+	public String addToStore(Long storeId, String productName, String productCategory, int amount, int price)
+	{
+		StoreProduct newProduct = new StoreProduct();
+		Optional<Store> optionalStore = this.storeRepository.findById(storeId);
+		if (!optionalStore.isPresent())
+			return "Store does not exist in DB!";
+		else
+		{
+			Store theStore = optionalStore.get();
+			newProduct.setStore(theStore);
+			newProduct.setName(productName);
+			newProduct.setPrice(price);
+			newProduct.setQuantity(amount);
+			Optional<ProductCategory> category = categoryRepository.findById(productCategory);
+			if (!category.isPresent())
+			{
+				ProductCategory newCategory = new ProductCategory();
+				newCategory.setCategoryName(productCategory);
+				ProductCategory categoryRV = categoryRepository.save(newCategory);
+				newProduct.setCategory(categoryRV);
+
+			}
+			else {
+				newProduct.setCategory(category.get());
+			}
+			StoreProduct spRV = storeProductRepository.save(newProduct);
+			return "Product saved successfully, ID is: "+spRV.getId();
+		}
 	}
 	
 	public String addToStoreFromSupplier (Long productId, Long merchantId, int amount, int price, Long storeId)

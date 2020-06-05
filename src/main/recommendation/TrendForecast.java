@@ -43,8 +43,10 @@ public class TrendForecast {
 		{			if (isTrending(p))
 			{
 				Trend newTrend = new Trend();
-				newTrend.setProduct(p);
+				newTrend.setProductName(p.getName());
+				newTrend.setMerchant(p.getStore().getMerchant());
 				newTrend.setForecastDate(LocalDate.now());
+				newTrend.setPlatform(p.getStore().getPlatform());
 				trendRepository.save(newTrend);
 			}
 		}

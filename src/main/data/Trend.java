@@ -18,8 +18,11 @@ public class Trend {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "id", updatable = false, nullable = false)
 	private Long trendId;
+	private String productName;
 	@ManyToOne
-	private StoreProduct product;
+	private Merchant merchant;
+	@ManyToOne
+	private Platform platform;
 	private LocalDate forecastDate;
 	public Long getTrendId() {
 		return trendId;
@@ -27,11 +30,18 @@ public class Trend {
 	public void setTrendId(Long trendId) {
 		this.trendId = trendId;
 	}
-	public StoreProduct getProduct() {
-		return product;
+
+	public String getProductName() {
+		return productName;
 	}
-	public void setProduct(StoreProduct product) {
-		this.product = product;
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+	public Merchant getMerchant() {
+		return merchant;
+	}
+	public void setMerchant(Merchant merchant) {
+		this.merchant = merchant;
 	}
 	public LocalDate getForecastDate() {
 		return forecastDate;
@@ -41,6 +51,12 @@ public class Trend {
 	}
 	public Trend() {
 		super();
+	}
+	public Platform getPlatform() {
+		return platform;
+	}
+	public void setPlatform(Platform platform) {
+		this.platform = platform;
 	}
 	
 	

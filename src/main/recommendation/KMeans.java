@@ -25,7 +25,6 @@ public class KMeans {
         for (int i = 0; i < maxIterations; i++) {
             boolean isLastIteration = i == maxIterations - 1;
      
-            // in each iteration we should find the nearest centroid for each record
             for (MerchantProfile merchant : merchants) {
                 Centroid centroid = nearestCentroid(merchant, centroids, distance);
                 assignToCluster(clusters, merchant, centroid);
@@ -42,6 +41,7 @@ public class KMeans {
             centroids = relocateCentroids(clusters);
             clusters = new HashMap<>();
         }
+        // check within clusters for a match between categories? or somehow add the categories as numeric feature?
      
         return lastState;
     }

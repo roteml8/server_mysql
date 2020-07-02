@@ -15,5 +15,6 @@ public interface StoreRepository extends CrudRepository<Store,Long> {
 	public ArrayList<Store> findByMerchant(Merchant m);
 	public ArrayList<Store> findByStoreNameIgnoreCaseContaining (String name);
 	public ArrayList<Store> findByPlatform(Platform p);
+	public Iterable<Store> findByStoreName(String name);
 
 }

@@ -58,6 +58,12 @@ public class Trend {
 	public void setPlatform(Platform platform) {
 		this.platform = platform;
 	}
+	@Override
+	public String toString() {
+		return "Trend [trendId=" + trendId + ", productName=" + productName + ", selling merchant=" + merchant + ", platform="
+				+ platform + ", forecastDate=" + forecastDate + "]";
+	}
+	
 	
 	
 

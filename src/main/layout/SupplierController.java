@@ -35,7 +35,7 @@ public class SupplierController {
 	      ,  @RequestParam String category,@RequestParam double price, 
 	      @RequestParam int quantity) {
 		
-			return this.supplierService.addToCatalog(supplierId, name, category, price, quantity);
+			return "Product ID:"+this.supplierService.addToCatalog(supplierId, name, category, price, quantity);
 	  }
 	
 

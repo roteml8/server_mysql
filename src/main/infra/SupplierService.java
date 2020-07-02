@@ -31,7 +31,7 @@ public class SupplierService {
 	    return rv.getSupplierId();
 	}
 	
-	public String addToCatalog( Long supplierId, String name, String category, double price, int quantity)
+	public Long addToCatalog( Long supplierId, String name, String category, double price, int quantity)
 	{
 
 		Optional<Supplier> s = this.supplierRepository.findById(supplierId);
@@ -53,11 +53,11 @@ public class SupplierService {
 			p.setProductPrice(price);
 			p.setQuantity(quantity);
 		    Product rv = productRepository.save(p);
-		    return "Saved products successfully. Product ID "+rv.getProductId();
+		    return rv.getProductId();
 
 		}
 		else
-			return "no supplier with specified id.";
+			return (long) 0;
 	}
 	
 	public Iterable<Supplier> getAll()

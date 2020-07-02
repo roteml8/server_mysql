@@ -59,6 +59,13 @@ public class Store {
 	public void setMerchant(Merchant merchant) {
 		this.merchant = merchant;
 	}
+	@Override
+	public String toString() {
+		return "Store [platform=" + platform + ", storeId=" + storeId + ", merchant=" + merchant + ", storeName="
+				+ storeName + "]";
+	}
+	
+	
 	
 }
 	

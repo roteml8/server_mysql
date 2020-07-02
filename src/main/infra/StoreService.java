@@ -23,11 +23,11 @@ public class StoreService {
 	@Autowired
 	private MerchantRepository merchantRepository;
 	
-	public String addNewStore (Long merchantId, String name, String platform)
+	public Long addNewStore (Long merchantId, String name, String platform)
 	{
 		Optional<Merchant> m = this.merchantRepository.findById(merchantId);
 		if (!m.isPresent())
-			return "Merchant does not exist in the system";
+			return (long) 0;
 		else {
 			Merchant theMerchant = m.get();
 			Store newStore = new Store();
@@ -41,7 +41,7 @@ public class StoreService {
 			newStore.setStoreName(name);
 			newStore.setMerchant(theMerchant);
 			Store rv  =this.storeRepository.save(newStore);
-			return "store saved successfully! Store ID "+rv.getStoreId();
+			return rv.getStoreId();
 
 			}
 	}
@@ -74,7 +74,7 @@ public class StoreService {
 	
 	public Iterable<Store> getByName (String name)
 	{
-		 return this.storeRepository.findByStoreNameIgnoreCaseContaining(name);
+		 return this.storeRepository.findByStoreName(name);
 	}
 
 	

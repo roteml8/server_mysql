@@ -31,7 +31,7 @@ public class OrderController {
 	  }
 	  
 	@PostMapping(path="/add") 
-		 public @ResponseBody String addNewOrder (@RequestParam Long productId,@RequestParam int quantity,
+		 public @ResponseBody Long addNewOrder (@RequestParam Long productId,@RequestParam int quantity,
 				 @RequestParam int month, @RequestParam int year, @RequestParam int day, @RequestParam double
 				 buyerAge) {
 

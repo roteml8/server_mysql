@@ -22,6 +22,11 @@ import javax.persistence.Transient;
 @Table(name = "MERCHANTS")
 public class Merchant {
 	
+	@Override
+	public String toString() {
+		return "Merchant [merchantName=" + merchantName + ", merchantId=" + merchantId + "]";
+	}
+
 	private String merchantName;
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)

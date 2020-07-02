@@ -40,7 +40,7 @@ public class MerchantController {
 	  }
 	
 	@PostMapping(path="/addnew") 
-	  public @ResponseBody String addProducts (
+	  public @ResponseBody Long addProducts (
 			  @RequestParam String productName,
 			  @RequestParam String productCategory,
 			  @RequestParam int amount,

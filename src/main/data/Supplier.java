@@ -41,5 +41,11 @@ public class Supplier {
 	public void setSupplierId(Long supplierId) {
 		this.supplierId = supplierId;
 	}
+	@Override
+	public String toString() {
+		return "Supplier [supplierName=" + supplierName + ", supplierId=" + supplierId + "]";
+	}
+	
+	
 
 }

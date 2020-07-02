@@ -45,12 +45,12 @@ public class MerchantService {
 	    return newId; 
 	}
 	
-	public String addToStore(Long storeId, String productName, String productCategory, int amount, int price)
+	public Long addToStore(Long storeId, String productName, String productCategory, int amount, int price)
 	{
 		StoreProduct newProduct = new StoreProduct();
 		Optional<Store> optionalStore = this.storeRepository.findById(storeId);
 		if (!optionalStore.isPresent())
-			return "Store does not exist in DB!";
+			return (long) 0;
 		else
 		{
 			Store theStore = optionalStore.get();
@@ -71,7 +71,7 @@ public class MerchantService {
 				newProduct.setCategory(category.get());
 			}
 			StoreProduct spRV = storeProductRepository.save(newProduct);
-			return "Product saved successfully, ID is: "+spRV.getId();
+			return spRV.getId();
 		}
 	}
 	
@@ -110,7 +110,7 @@ public class MerchantService {
 					newPurchase.setMerchant(m.get());
 					newPurchase.setProduct(theProduct);
 					MerchantPurchase rv = this.purchasesRepository.save(newPurchase);
-				    return "Products purchased successfully. Purchase ID is "+rv.getPurchaseId();
+				    return rv.getPurchaseId().toString();
 
 				}
 			}

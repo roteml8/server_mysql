@@ -21,7 +21,7 @@ public class TrendController {
 	    return this.trendForecast.getAll();
 	  }
 	  
-	  @PostMapping(path="/update")
+	  @GetMapping(path="/update")
 	  public @ResponseBody Iterable<Trend> update() {
 	     this.trendForecast.setTrendingProducts();
 	     return this.trendForecast.getAll();

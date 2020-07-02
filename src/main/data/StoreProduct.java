@@ -62,6 +62,13 @@ public class StoreProduct {
 	public void setStore(Store store) {
 		this.store = store;
 	}
+	@Override
+	public String toString() {
+		return "StoreProduct [id=" + id + ", name=" + name + ", category=" + category + ", quantity=" + quantity
+				+ ", price=" + price + ", store=" + store + "]";
+	}
+	
+	
 	
 	
 	

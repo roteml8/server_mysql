@@ -32,12 +32,12 @@ public class OrderService {
 		return orderRepository.findByProduct(p);
 	}
 	
-	public String addNewOrder (Long productId, int quantity, int month, int year, int day, double buyerAge)
+	public Long addNewOrder (Long productId, int quantity, int month, int year, int day, double buyerAge)
 	{
 	   BuyerOrder newOrder = new BuyerOrder();
 	   Optional<StoreProduct> optional = storeRepository.findById(productId);
 	   if (!optional.isPresent())
-		   return "Product of order does not exist!";
+		   return (long) 0;
 	   else
 	   {
 		   StoreProduct theProduct = optional.get();
@@ -49,7 +49,7 @@ public class OrderService {
 		   LocalDate date = LocalDate.of(year, month, day);
 		   newOrder.setDate(date);
 		   BuyerOrder orderRV = orderRepository.save(newOrder);
-		   return "Order added successufly to DB. Order ID is: "+orderRV.getOrderId();
+		   return orderRV.getOrderId();
 	   }
 	   
 	}

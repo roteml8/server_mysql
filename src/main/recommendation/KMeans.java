@@ -40,9 +40,7 @@ public class KMeans {
             // at the end of each iteration we should relocate the centroids
             centroids = relocateCentroids(clusters);
             clusters = new HashMap<>();
-        }
-        // check within clusters for a match between categories? or somehow add the categories as numeric feature?
-     
+        }     
         return lastState;
     }
     

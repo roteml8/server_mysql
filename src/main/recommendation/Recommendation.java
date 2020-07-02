@@ -29,4 +29,53 @@ public class Recommendation {
 	
 	// method: find recommendation by merchant
 
+
+	public Recommendation() {
+	}
+
+	public Recommendation(Merchant toMerchant, String productName, Store atStore) {
+	    setToMerchant(toMerchant);
+	    setProductName(productName);
+	    setAtStore(atStore);
+	}
+
+	public Long getRecommendationId() {
+		return recommendationId;
+	}
+
+	public void setRecommendationId(Long recommendationId) {
+		this.recommendationId = recommendationId;
+	}
+
+	public Merchant getToMerchant() {
+		return toMerchant;
+	}
+
+	public void setToMerchant(Merchant toMerchant) {
+		this.toMerchant = toMerchant;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public Store getAtStore() {
+		return atStore;
+	}
+
+	public void setAtStore(Store atStore) {
+		this.atStore = atStore;
+	}
+
+	@Override
+	public String toString() {
+		return "Recommendation [recommendationId=" + recommendationId + ", toMerchant=" + toMerchant + ", recommendedProduct="
+				+ productName + ", atStore=" + atStore + "]";
+	}
+	
+	
 }

@@ -49,7 +49,7 @@ public class StoreController {
 	  }
 	  
 		@PostMapping(path="/add") // Map ONLY POST Requests
-		  public @ResponseBody String addStore (@RequestParam Long merchantId, @RequestParam String name,
+		  public @ResponseBody Long addStore (@RequestParam Long merchantId, @RequestParam String name,
 				  @RequestParam String platform	  
 		    ) {
 				return this.storeService.addNewStore(merchantId, name, platform);

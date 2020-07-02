@@ -2,7 +2,10 @@ package main.recommendation;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import main.data.Platform;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -24,7 +27,7 @@ public class TrendForecast {
 	private TrendRepository trendRepository;
 	@Autowired
 	private StoreProductRepository productRepository;
-	private final  int RAISE = 40; 
+	private final int RAISE = 40; 
 	
 	@Autowired
 	public TrendForecast(OrderService orderService)
@@ -35,12 +38,26 @@ public class TrendForecast {
 	public Iterable<Trend> getAll(){
 		return trendRepository.findAll();
 	}
+
+	// return trends of given products not on the given platform
+	public List<Trend> findTrendsByProductsNotInPlatform(List<StoreProduct> products, Platform platform){
+		
+		List<String> productNames = products.stream().map(StoreProduct::getName).collect(Collectors.toList());
+		return trendRepository.findAllByProductNameInAndPlatform_PlatformNameIsNotLikeOrderByForecastDateDesc(
+				productNames, platform.getPlatformName());
+	}
+
+	// return true if a given product is trending on a given platform
+	public Boolean isProductTrendingAtPlatform(String productName, Platform platform){
+		return !trendRepository.findAllByProductNameAndPlatform_PlatformNameIsLike(productName,
+				platform.getPlatformName()).isEmpty();
+	}
 	
 	public void setTrendingProducts()
 	{
 		Iterable<StoreProduct> products = productRepository.findAll();
 		for (StoreProduct p: products)
-		{			if (isTrending(p))
+		{	if (isTrending(p))
 			{
 				Trend newTrend = new Trend();
 				newTrend.setProductName(p.getName());

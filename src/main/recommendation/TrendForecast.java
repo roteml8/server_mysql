@@ -83,7 +83,8 @@ public class TrendForecast {
 		LocalDate week2 = today.minusDays(14);
 		LocalDate week1 = today.minusDays(21);
 
-
+		if (ordersOfProduct.isEmpty())
+			return false;
 		for (BuyerOrder o: ordersOfProduct)
 		{
 			LocalDate orderDate = o.getDate().plusDays(1);
@@ -112,7 +113,7 @@ public class TrendForecast {
 			
 			if (((week3counter-week2counter)/(double)week2counter)*100 < RAISE)
 				return false;			
-			System.out.println("Returning true!");
+
 			return true;
 	}
 

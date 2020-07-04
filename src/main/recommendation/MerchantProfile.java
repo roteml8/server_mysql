@@ -2,10 +2,7 @@ package main.recommendation;
 
 import java.util.*;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import main.dao.rdb.BuyerOrderRepository;
@@ -14,6 +11,8 @@ import main.data.BuyerOrder;
 import main.data.ProductCategory;
 import main.data.Store;
 import main.data.StoreProduct;
+
+import javax.annotation.PostConstruct;
 
 public class MerchantProfile {
 	
@@ -26,19 +25,24 @@ public class MerchantProfile {
 	private double avgPrice; 
 	private double avgBuyerAge;
 	private List<ProductCategory> merchantCategories;
-	private Map<String, Double> features;
+	private final Map<String, Double> features;
 	private String description;
 	private List<StoreProduct> allStoreProducts;
 	private Store store;
-	
-	@PostConstruct
-	public void init()
+
+
+	public MerchantProfile(Store store, Long merchantId)
 	{
-//		this.setMerchantId(merchantId);
-//		setStore(store);
+		this.setMerchantId(merchantId);
+		setStore(store);
+		this.features = new HashMap<>();
+		this.merchantCategories = new ArrayList<>();
+	}
+
+	@PostConstruct
+	public void init(){
 		int priceCounter = 0, priceSum = 0;
 		allStoreProducts = this.storeProductRepository.findByStore(store);
-		this.merchantCategories = new ArrayList<>();
 		// collect store products categories and calculate average price of product
 		for (StoreProduct p: allStoreProducts)
 		{
@@ -48,7 +52,7 @@ public class MerchantProfile {
 				this.merchantCategories.add(p.getCategory());
 		}
 		this.avgPrice = priceSum/priceCounter;
-		
+
 		// calculate average age of store buyer
 		ArrayList<BuyerOrder> allStoreOrders = this.orderRepository.findByStore(store);
 		int ageCounter = 0, ageSum = 0;
@@ -59,46 +63,10 @@ public class MerchantProfile {
 		}
 		this.avgBuyerAge = ageSum/ageCounter;
 		// numerical features
-		this.features = new HashMap<>();
 		this.features.put("AveragePrice", this.avgPrice);
 		this.features.put("AverageBuyerAge", this.avgBuyerAge);
 		this.description = "MerchantID: "+this.merchantId+" Average Product Price: "+this.avgPrice+" Average Buyer Age: "+this.avgBuyerAge+
 				"Merchant Products Categories: "+this.merchantCategories;
-	}
-	
-	public MerchantProfile(Store store, Long merchantId)
-	{
-		this.setMerchantId(merchantId);
-		setStore(store);
-//		int priceCounter = 0, priceSum = 0;
-//		allStoreProducts = this.storeProductRepository.findByStore(store);
-//		this.merchantCategories = new ArrayList<>();
-//		// collect store products categories and calculate average price of product
-//		for (StoreProduct p: allStoreProducts)
-//		{
-//			priceSum+= p.getPrice();
-//			priceCounter++;
-//			if (!this.merchantCategories.contains(p.getCategory()))
-//				this.merchantCategories.add(p.getCategory());
-//		}
-//		this.avgPrice = priceSum/priceCounter;
-//		
-//		// calculate average age of store buyer
-//		ArrayList<BuyerOrder> allStoreOrders = this.orderRepository.findByStore(store);
-//		int ageCounter = 0, ageSum = 0;
-//		for (BuyerOrder o: allStoreOrders)
-//		{
-//			ageSum += o.getBuyerAge();
-//			ageCounter++;
-//		}
-//		this.avgBuyerAge = ageSum/ageCounter;
-//		// numerical features
-//		this.features = new HashMap<>();
-//		this.features.put("AveragePrice", this.avgPrice);
-//		this.features.put("AverageBuyerAge", this.avgBuyerAge);
-//		this.description = "MerchantID: "+this.merchantId+" Average Product Price: "+this.avgPrice+" Average Buyer Age: "+this.avgBuyerAge+
-//				"Merchant Products Categories: "+this.merchantCategories;
-
 	}
 
 	public double getAvgPrice() {

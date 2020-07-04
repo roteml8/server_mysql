@@ -54,5 +54,26 @@ public class OrderService {
 	   
 	}
 	
+	public Long addNewOrderLocal (Long productId, int quantity, LocalDate date, double buyerAge)
+	{
+	   BuyerOrder newOrder = new BuyerOrder();
+	   Optional<StoreProduct> optional = storeRepository.findById(productId);
+	   if (!optional.isPresent())
+		   return (long) 0;
+	   else
+	   {
+		   StoreProduct theProduct = optional.get();
+		   Store theStore = theProduct.getStore();
+		   newOrder.setStore(theStore);
+		   newOrder.setProduct(theProduct);
+		   newOrder.setQuantity(quantity);
+		   newOrder.setBuyerAge(buyerAge);
+		   newOrder.setDate(date);
+		   BuyerOrder orderRV = orderRepository.save(newOrder);
+		   return orderRV.getOrderId();
+	   }
+	   
+	}
+	
 
 }

@@ -10,7 +10,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 
+import main.dao.rdb.BuyerOrderRepository;
 import main.dao.rdb.ProductRepository;
+import main.dao.rdb.TrendRepository;
 import main.data.Product;
 import main.infra.ProductService;
 import main.infra.SupplierService;
@@ -27,7 +29,7 @@ public class MerchantSerachTest {
 	
 	@Autowired
 	private ProductRepository productRepository;
-	
+
 	@Test
 	public void testSearchCatalogByMerchant() throws Exception
 	{

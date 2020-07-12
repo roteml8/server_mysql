@@ -64,7 +64,7 @@ public class TrendForecast {
 				newTrend.setMerchant(p.getStore().getMerchant());
 				newTrend.setForecastDate(LocalDate.now());
 				newTrend.setPlatform(p.getStore().getPlatform());
-				trendRepository.save(newTrend);
+				Trend rv = trendRepository.save(newTrend);
 			}
 		}
 		

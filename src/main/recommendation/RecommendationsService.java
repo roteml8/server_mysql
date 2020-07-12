@@ -1,6 +1,7 @@
 package main.recommendation;
 
 import main.dao.rdb.MerchantRepository;
+import main.dao.rdb.RecommendationRepository;
 import main.data.Merchant;
 import main.data.MerchantProfile;
 import main.data.Trend;
@@ -30,14 +31,15 @@ public class RecommendationsService {
     private MerchantRepository merchantRepository;
     private MerchantProfileService merchantProfileService;
     private TrendForecast trendForecast;
-
+    private RecommendationRepository recommendationRepository;
 
     @Autowired
     public RecommendationsService(MerchantRepository merchantRepository, MerchantProfileService merchantProfileService,
-                                  TrendForecast trendForecast) {
+                                  TrendForecast trendForecast, RecommendationRepository recommendationRepository) {
         setMerchantRepository(merchantRepository);
         setTrendForecast(trendForecast);
         setMerchantProfileService(merchantProfileService);
+        setRecommendationRepository(recommendationRepository);
     }
 
 
@@ -51,20 +53,17 @@ public class RecommendationsService {
      6. Find all trending products 
      7. Return Trending products of the other merchants and in which platform to sell them as recommendations
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public List<Recommendation> recommend(Merchant merchant){
-    	
         List<Merchant> merchants = merchantRepository.findAll();
         List<MerchantProfile> merchantProfiles = mapMerchantsToMerchantProfiles(merchants);
         MerchantProfile merchantProfile = findProfileByMerchant(merchantProfiles, merchant);
         Map<Centroid, List<MerchantProfile>> centroids = KMeans.fit(merchantProfiles, k, distance, maxIterations);
-     //   System.out.println(centroids.toString());
         List<MerchantProfile> merchantCluster = otherMerchantsInCluster(centroids, merchantProfile);
-     //   System.out.println(merchantCluster.toString());
         List<Trend> trendsToRecommend = getTrendingProductsBeingSoldByMerchants(merchantProfile, merchantCluster);
-        //System.out.println(trendsToRecommend);
         return trendsToRecommend.stream()
                 .map(trend -> new Recommendation(merchant, trend.getProductName(), merchantProfile.getStore()))
+                .map(recommendationRepository::save)
                 .collect(Collectors.toList());
     }
 
@@ -141,5 +140,9 @@ public class RecommendationsService {
 
     public void setMerchantProfileService(MerchantProfileService merchantProfileService) {
         this.merchantProfileService = merchantProfileService;
+    }
+
+    public void setRecommendationRepository(RecommendationRepository recommendationRepository) {
+        this.recommendationRepository = recommendationRepository;
     }
 }

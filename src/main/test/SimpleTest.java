@@ -2,6 +2,7 @@ package main.test;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import main.Application;
 import org.junit.Test;
@@ -64,6 +65,8 @@ public class SimpleTest {
 		Long orderId1 = orders.addNewOrderLocal(productId1, 50, today.minusDays(21),20);
 		Long orderId2 = orders.addNewOrderLocal(productId1, 100, today.minusDays(14),20);
 		Long orderId3 = orders.addNewOrderLocal(productId1, 200, today.minusDays(7),20);
+		
+		Long orderId4 = orders.addNewOrderLocal(productId2, 50, today.minusDays(21),20);
 
 //		BuyerOrder o11 = new BuyerOrder();
 //		o11.setBuyerAge(20);
@@ -77,14 +80,21 @@ public class SimpleTest {
 //		t1.setPlatform(p1);
 //		t1.setProductName("ring");
 //		trends.save(t1);
-		List<Merchant> allMerchants = merchantRepository.findAll();
-		for (Merchant m: allMerchants)
-		{
-			List<Recommendation> recommendations = this.recommendation.recommend(m);
-			for (Recommendation r: recommendations)
-				System.out.println(r.toString());
-		}
-		
+//		List<Merchant> allMerchants = merchantRepository.findAll();
+//		for (Merchant m: allMerchants)
+//		{
+//			List<Recommendation> recommendations = this.recommendation.recommend(m);
+//			if (recommendations.isEmpty())
+//				System.out.println("no recommendations");
+//			for (Recommendation r: recommendations)
+//				System.out.println(r.toString());
+//		}
+		Merchant m2 = merchantRepository.findById(merchantId2).get();
+		List<Recommendation> recommendations = this.recommendation.recommend(m2);
+		if (recommendations.isEmpty())
+			System.out.println("no recommendations");
+		for (Recommendation r: recommendations)
+			System.out.println(r.toString());
 		
 	}
 

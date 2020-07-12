@@ -1,8 +1,8 @@
 package main.recommendation;
 
 import main.dao.rdb.MerchantRepository;
-import main.dao.rdb.StoreRepository;
 import main.data.Merchant;
+import main.data.MerchantProfile;
 import main.data.Trend;
 import main.recommendation.exceptions.MerchantProfileNotFoundInAnyClusterException;
 import main.recommendation.exceptions.NoSuchMerchantProfileException;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -29,16 +28,16 @@ public class RecommendationsService {
 
     private EuclideanDistance distance = new EuclideanDistance();
     private MerchantRepository merchantRepository;
-    private StoreRepository storeRepository;
+    private MerchantProfileService merchantProfileService;
     private TrendForecast trendForecast;
 
 
     @Autowired
-    public RecommendationsService(MerchantRepository merchantRepository, StoreRepository storeRepository,
+    public RecommendationsService(MerchantRepository merchantRepository, MerchantProfileService merchantProfileService,
                                   TrendForecast trendForecast) {
         setMerchantRepository(merchantRepository);
-        setStoreRepository(storeRepository);
         setTrendForecast(trendForecast);
+        setMerchantProfileService(merchantProfileService);
     }
 
 
@@ -59,8 +58,11 @@ public class RecommendationsService {
         List<MerchantProfile> merchantProfiles = mapMerchantsToMerchantProfiles(merchants);
         MerchantProfile merchantProfile = findProfileByMerchant(merchantProfiles, merchant);
         Map<Centroid, List<MerchantProfile>> centroids = KMeans.fit(merchantProfiles, k, distance, maxIterations);
+     //   System.out.println(centroids.toString());
         List<MerchantProfile> merchantCluster = otherMerchantsInCluster(centroids, merchantProfile);
+     //   System.out.println(merchantCluster.toString());
         List<Trend> trendsToRecommend = getTrendingProductsBeingSoldByMerchants(merchantProfile, merchantCluster);
+        //System.out.println(trendsToRecommend);
         return trendsToRecommend.stream()
                 .map(trend -> new Recommendation(merchant, trend.getProductName(), merchantProfile.getStore()))
                 .collect(Collectors.toList());
@@ -70,10 +72,8 @@ public class RecommendationsService {
     // this function assumes only one store per merchant 
     private List<MerchantProfile> mapMerchantsToMerchantProfiles(List<Merchant> merchants){
         return merchants.stream()
-                .map(merchant -> storeRepository.findByMerchant(merchant))
-                .filter(stores -> !stores.isEmpty())
-                .map(stores -> stores.get(0))
-                .map(store -> new MerchantProfile(store, store.getMerchant().getMerchantId()))
+                .map(merchantProfileService::toMerchantProfile)
+                .filter(merchantProfile -> merchantProfile.getStore() != null)
                 .collect(Collectors.toList());
     }
 
@@ -135,11 +135,11 @@ public class RecommendationsService {
         this.merchantRepository = merchantRepository;
     }
 
-    public void setStoreRepository(StoreRepository storeRepository) {
-        this.storeRepository = storeRepository;
-    }
-
     public void setTrendForecast(TrendForecast trendForecast) {
         this.trendForecast = trendForecast;
+    }
+
+    public void setMerchantProfileService(MerchantProfileService merchantProfileService) {
+        this.merchantProfileService = merchantProfileService;
     }
 }

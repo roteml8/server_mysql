@@ -8,6 +8,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import main.data.MerchantProfile;
+
 public class KMeans {
 	
 	private static final Random random = new Random();

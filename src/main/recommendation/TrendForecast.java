@@ -113,7 +113,6 @@ public class TrendForecast {
 			
 			if (((week3counter-week2counter)/(double)week2counter)*100 < RAISE)
 				return false;			
-
 			return true;
 	}
 

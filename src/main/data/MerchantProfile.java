@@ -1,26 +1,8 @@
-package main.recommendation;
+package main.data;
 
 import java.util.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import main.dao.rdb.BuyerOrderRepository;
-import main.dao.rdb.StoreProductRepository;
-import main.data.BuyerOrder;
-import main.data.ProductCategory;
-import main.data.Store;
-import main.data.StoreProduct;
-
-import javax.annotation.PostConstruct;
-
 public class MerchantProfile {
-	
-	@Autowired
-	private StoreProductRepository storeProductRepository;
-	@Autowired
-	private BuyerOrderRepository orderRepository;
-	
 	private Long merchantId;
 	private double avgPrice; 
 	private double avgBuyerAge;
@@ -30,43 +12,28 @@ public class MerchantProfile {
 	private List<StoreProduct> allStoreProducts;
 	private Store store;
 
-
-	public MerchantProfile(Store store, Long merchantId)
-	{
-		this.setMerchantId(merchantId);
-		setStore(store);
+	public MerchantProfile() {
 		this.features = new HashMap<>();
 		this.merchantCategories = new ArrayList<>();
 	}
 
-	@PostConstruct
-	public void init(){
-		int priceCounter = 0, priceSum = 0;
-		allStoreProducts = this.storeProductRepository.findByStore(store);
-		// collect store products categories and calculate average price of product
-		for (StoreProduct p: allStoreProducts)
-		{
-			priceSum+= p.getPrice();
-			priceCounter++;
-			if (!this.merchantCategories.contains(p.getCategory()))
-				this.merchantCategories.add(p.getCategory());
-		}
-		this.avgPrice = priceSum/priceCounter;
+	public MerchantProfile(Store store, Long merchantId) {
+		this();
+		setMerchantId(merchantId);
+		setStore(store);
+	}
 
-		// calculate average age of store buyer
-		ArrayList<BuyerOrder> allStoreOrders = this.orderRepository.findByStore(store);
-		int ageCounter = 0, ageSum = 0;
-		for (BuyerOrder o: allStoreOrders)
-		{
-			ageSum += o.getBuyerAge();
-			ageCounter++;
-		}
-		this.avgBuyerAge = ageSum/ageCounter;
-		// numerical features
-		this.features.put("AveragePrice", this.avgPrice);
-		this.features.put("AverageBuyerAge", this.avgBuyerAge);
-		this.description = "MerchantID: "+this.merchantId+" Average Product Price: "+this.avgPrice+" Average Buyer Age: "+this.avgBuyerAge+
-				"Merchant Products Categories: "+this.merchantCategories;
+	public MerchantProfile(Long merchantId, double avgPrice, double avgBuyerAge,
+						   List<ProductCategory> merchantCategories, List<StoreProduct> allStoreProducts, Store store) {
+		this(store, merchantId);
+		this.avgPrice = avgPrice;
+		this.avgBuyerAge = avgBuyerAge;
+		this.merchantCategories = merchantCategories;
+		this.allStoreProducts = allStoreProducts;
+		features.put("AveragePrice", avgPrice);
+		features.put("AverageBuyerAge", avgBuyerAge);
+		this.description = "MerchantID: "+this.merchantId+" Average Product Price: "+this.avgPrice
+				+" Average Buyer Age: "+this.avgBuyerAge+ "Merchant Products Categories: "+this.merchantCategories;
 	}
 
 	public double getAvgPrice() {

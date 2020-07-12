@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,13 +55,19 @@ public class RecommendationTest {
 						String[] productData = row.split(",");
 						Long productId = merchants.addToStore(storeId, productData[0], productData[1], 
 								Integer.parseInt(productData[2]), Integer.parseInt(productData[3]));
+						LocalDate today = LocalDate.now();
+
 						for (int j=1; j<=numberOfOrdersToProduct; j++)
 						{
+
+//							Long orderId = orders.addNewOrder(productId, Integer.parseInt(orderData[0]),
+//									Integer.parseInt(orderData[1]), Integer.parseInt(orderData[2]), Integer.parseInt(orderData[3]), 
+//									Integer.parseInt(orderData[4]));
 							row = csvReader.readLine();
 							String[] orderData = row.split(",");
-							Long orderId = orders.addNewOrder(productId, Integer.parseInt(orderData[0]),
-									Integer.parseInt(orderData[1]), Integer.parseInt(orderData[2]), Integer.parseInt(orderData[3]), 
-									Integer.parseInt(orderData[4]));
+							Long orderId1 = orders.addNewOrderLocal(productId, Integer.parseInt(orderData[0]), today.minusDays(21),Integer.parseInt(orderData[1]));
+							Long orderId2 = orders.addNewOrderLocal(productId, Integer.parseInt(orderData[0]), today.minusDays(14),Integer.parseInt(orderData[1]));
+							Long orderId3 = orders.addNewOrderLocal(productId, Integer.parseInt(orderData[0]), today.minusDays(7),Integer.parseInt(orderData[1]));
 						}
 				}
 			    

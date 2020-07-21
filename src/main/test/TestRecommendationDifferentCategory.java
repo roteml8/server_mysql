@@ -1,25 +1,22 @@
 package main.test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
-import main.Application;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import main.Application;
 import main.dao.rdb.BuyerOrderRepository;
 import main.dao.rdb.MerchantRepository;
 import main.dao.rdb.PlatformRepository;
 import main.dao.rdb.TrendRepository;
-import main.data.BuyerOrder;
 import main.data.Merchant;
-import main.data.Platform;
-import main.data.Trend;
 import main.infra.MerchantService;
 import main.infra.OrderService;
 import main.infra.StoreService;
@@ -27,10 +24,9 @@ import main.recommendation.Recommendation;
 import main.recommendation.RecommendationsService;
 
 
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SimpleTest {
+public class TestRecommendationDifferentCategory {
 	
 	@Autowired
 	private MerchantService merchants;
@@ -49,7 +45,6 @@ public class SimpleTest {
 	@Autowired
 	private PlatformRepository platforms;
 	
-	
 	@Test
 	public void testRecommendations()
 	{
@@ -59,7 +54,7 @@ public class SimpleTest {
 		Long storeId2 = stores.addNewStore(merchantId2, "yaronsstore", "amazon");
 		Long productId1 = merchants.addToStore(storeId1, "ring", "jewelry", 
 				5, 7);
-		Long productId2 = merchants.addToStore(storeId2, "necklace", "jewelry", 
+		Long productId2 = merchants.addToStore(storeId2, "blue tshirt", "fashion", 
 				5, 7);
 		LocalDate today = LocalDate.now();
 		Long orderId1 = orders.addNewOrderLocal(productId1, 50, today.minusDays(21),20);
@@ -91,11 +86,9 @@ public class SimpleTest {
 //		}
 		Merchant m2 = merchantRepository.findById(merchantId2).get();
 		List<Recommendation> recommendations = this.recommendation.recommend(m2);
-		if (recommendations.isEmpty())
-			System.out.println("no recommendations");
-		for (Recommendation r: recommendations)
-			System.out.println(r.toString());
+		assertThat(recommendations).isEmpty();
 		
 	}
+
 
 }

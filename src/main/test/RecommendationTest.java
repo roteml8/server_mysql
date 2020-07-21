@@ -89,7 +89,14 @@ public class RecommendationTest {
 		{
 			List<Recommendation> recommendations = this.recommendation.recommend(m);
 			for (Recommendation r: recommendations)
-				System.out.println(r.toString());
+			{
+				Merchant toMerchant = r.getToMerchant();
+				System.out.println("/nRecommendation:/n");
+				System.out.println("to Merchant: "+toMerchant.getMerchantName()+", id: "+toMerchant.getMerchantId()+"\n");
+				System.out.println("Product: "+r.getProductName()+"/n");
+				System.out.println("at Store: "+r.getAtStore().getStoreName()+" on platform: "+r.getAtStore().getPlatform().getPlatformName()+"/n");
+			}
+
 		}
 		
 		

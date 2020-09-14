@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -59,6 +60,7 @@ public class RecommendationsService {
         List<MerchantProfile> merchantProfiles = mapMerchantsToMerchantProfiles(merchants);
         MerchantProfile merchantProfile = findProfileByMerchant(merchantProfiles, merchant);
         Map<Centroid, List<MerchantProfile>> centroids = KMeans.fit(merchantProfiles, k, distance, maxIterations);
+        System.out.println("CENTROIDS NUMBER: "+centroids.size());
         List<MerchantProfile> merchantCluster = otherMerchantsInCluster(centroids, merchantProfile);
         List<Trend> trendsToRecommend = getTrendingProductsBeingSoldByMerchants(merchantProfile, merchantCluster);
         return trendsToRecommend.stream()
@@ -115,6 +117,7 @@ public class RecommendationsService {
                 .flatMap(List::stream)
                 .filter(trend -> !trendForecast.isProductTrendingAtPlatform(trend.getProductName(),
                         merchantProfile.getStore().getPlatform()))
+                .filter(trend->trend.getForecastDate().equals(LocalDate.now()))
                 .collect(Collectors.toList());
     }
 

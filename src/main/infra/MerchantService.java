@@ -17,6 +17,8 @@ import main.data.Product;
 import main.data.ProductCategory;
 import main.data.Store;
 import main.data.StoreProduct;
+import main.recommendation.Recommendation;
+import main.recommendation.RecommendationsService;
 
 @Service
 public class MerchantService {
@@ -33,6 +35,8 @@ public class MerchantService {
 	private StoreProductRepository storeProductRepository;
 	@Autowired
 	private CategoryRepository categoryRepository;
+	@Autowired
+	private RecommendationsService recommendationsService;
 	
 	
 	
@@ -152,6 +156,14 @@ public class MerchantService {
 		return this.merchantRepository.findAll();
 	}
 	
+	public Iterable<Recommendation> getRecommendation(Long storeId) throws Exception
+	{
+		Optional<Store> theStore = storeRepository.findById(storeId);
+		if (!theStore.isPresent())
+			throw new Exception("Store does not exist in the system");
+		Merchant theMerchant = theStore.get().getMerchant();
+		return this.recommendationsService.recommend(theMerchant);
+	}
 	
 
 }
